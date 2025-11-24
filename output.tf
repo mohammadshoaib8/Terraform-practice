@@ -17,3 +17,6 @@ output "internet_gateway" {
 output "route_table" {
   value = aws_route_table.pubrt.id
 }
+output "security_group" {
+  value = aws_security_group.mysg.id
+}
