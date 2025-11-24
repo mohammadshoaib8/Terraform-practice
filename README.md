@@ -6,38 +6,59 @@
 
 
 This project demonstrates how to build a complete AWS VPC infrastructure using Terraform, following production-grade DevOps best practices.
+
 📌 Architecture Overview
-VPC
- ├── 2 Public Subnets  
- ├── Internet Gateway  
- ├── Public Route Table  
- ├── Route Table Associations  
+🔽 High-Level Diagram
+
+(Image loads directly in GitHub/LinkedIn)
+
+VPC  
+ ├── 2 Public Subnets (ap-southeast-1a & 1b)
+ ├── Internet Gateway
+ ├── Public Route Table
+ ├── Route Table Associations
  └── EC2 Instance (Ubuntu latest AMI)
 
- 📁 Project Structure
- .
+📁 Project Structure
+.
 ├── main.tf
 ├── variables.tf
 ├── outputs.tf
 └── provider.tf
 
-What This Terraform Code Creates
+🧩 What This Terraform Code Creates
 Resource	Description
-VPC	10.0.0.0/16 custom VPC
+VPC	Custom 10.0.0.0/16
 2 Public Subnets	ap-southeast-1a & ap-southeast-1b
-Internet Gateway	Enables internet access
-Route Table	Public route table + IGW route
+Internet Gateway	Enables outbound internet
+Route Table	Public route + IGW
 EC2 Instance	Ubuntu, t3.micro
-Security Group	Allows SSH from anywhere
+Security Group	SSH allowed (port 22)
+⚙️ Key Terraform Features Used
+1️⃣ Dynamic AMI Fetching (Data Source)
+data "aws_ami" "latest" {
+  most_recent = true
+  owners = ["099720109477"]
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-noble-*"]
+  }
+}
 
-1. Dynamic AMI selection using Data Sources
-2. Variables instead of hardcoding
-3. Output values for debugging.
+2️⃣ Variables Instead of Hardcoding
+variable "vpc_cidr" {}
+variable "instance_type" {}
+variable "public_subnet_a" {}
+
+3️⃣ Output Values for Debugging
+output "instance_public_ip" {
+  value = aws_instance.myvm.public_ip
+}
 
 🚀 How to Run This Project
-1️⃣ Configure AWS Credentials
+1️⃣ Configure AWS Credentials (Best Practice)
 
-Do NOT hardcode credentials.
+Do NOT hardcode access keys.
 Use environment variables:
 
 export AWS_ACCESS_KEY_ID="xxxx"
@@ -47,46 +68,40 @@ export AWS_DEFAULT_REGION="ap-southeast-1"
 2️⃣ Initialize Terraform
 terraform init
 
-3️⃣ Validate the code
+3️⃣ Validate Configuration
 terraform validate
 
-4️⃣ Preview execution
+4️⃣ View the Plan
 terraform plan
 
-5️⃣ Deploy the infra
+5️⃣ Deploy Infrastructure
 terraform apply -auto-approve
 
-6️⃣ Destroy infra when done
+6️⃣ Destroy When Done
 terraform destroy -auto-approve
 
-
-📤 Outputs (Sample)
-vpc_id = vpc-08a2ab3491
-subnet_a_id = subnet-02371fa91
-instance_public_ip = 18.141.91.10
-instance_id = i-0cabc1a23def
-
+📤 Sample Outputs
+vpc_id               = vpc-08a2ab3491
+subnet_a_id          = subnet-02371fa91
+instance_public_ip   = 18.141.91.10
+instance_id          = i-0cabc1a23def
 
 📚 Learnings From This Project
 
-You must never hardcode secrets
+✔ Never hardcode AWS Secrets
+✔ Use Terraform Registry Docs → search → pick → implement
+✔ Use variables to avoid repeating values
+✔ Use data sources for dynamic & latest AMI values
+✔ Split infrastructure into multiple .tf files
+✔ Use GitHub for version control
+✔ Test infra thoroughly after deployment
 
-Always use terraform docs → search → pick → implement
+🖼 Bonus: GitHub Banner Image for Your Repo
 
-Use variables to avoid repeating values
-
-Use data sources for dynamic values
-
-Break code into multiple .tf files (modular structure)
-
-Commit each change to GitHub → version control
-
-Test infra after deployment.
-
-
+Use this at the top of your README:
 
 🧑‍💻 Author
 
 Shaik Mohammad Shoaib
 DevOps Engineer | AWS | Terraform | Docker | Kubernetes | CI/CD
-Open for DevOps roles 🚀
+🚀 Actively looking for DevOps roles
