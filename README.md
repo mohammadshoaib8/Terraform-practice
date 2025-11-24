@@ -1,6 +1,11 @@
-Terraform VPC + EC2 Project (AWS Hands-On Lab)
+🚀 Terraform VPC + EC2 Project (AWS Hands-On Lab)
 
-This project demonstrates how to build a complete AWS VPC environment using Terraform, following production-grade best practices.
+
+
+
+
+
+This project demonstrates how to build a complete AWS VPC infrastructure using Terraform, following production-grade DevOps best practices.
 📌 Architecture Overview
 VPC
  ├── 2 Public Subnets  
